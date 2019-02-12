@@ -1,0 +1,139 @@
+// T-tip tip calculator
+// by Michael Thomas
+// November 2014
+// My first Android project
+
+package me.methomas.www.ttip;
+
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
+import java.text.DecimalFormat;
+
+public class TtipActivity extends ActionBarActivity
+{
+    private static final String DEFAULT_PERCENTAGE = "15";
+    private static String tipString;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ttip);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        // Set event handlers for text changes.
+        EditText checkInput = (EditText)findViewById(R.id.CheckValue);
+        checkInput.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+            {
+                if (actionId == EditorInfo.IME_ACTION_DONE)
+                {
+                    calculate();
+                }
+                return false;
+            }
+        });
+
+        EditText tipInput = (EditText)findViewById(R.id.TipPercentInput);
+        tipInput.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+            {
+                if (actionId == EditorInfo.IME_ACTION_DONE)
+                {
+                    calculate();
+                }
+                return false;
+            }
+        });
+
+        // Restore last tip percentage
+        SharedPreferences oldPercentage = getPreferences(MODE_PRIVATE);
+        String savedPercentage = oldPercentage.getString("percentage", DEFAULT_PERCENTAGE);
+        tipInput.setText( savedPercentage );
+
+    }
+
+    public void calculate()
+    {
+        // Input assumes no more than 2 digits after the decimal point (Input unprocessed)
+        EditText checkInput = (EditText)findViewById(R.id.CheckValue);
+        String checkString = checkInput.getText().toString();
+        // I want to keep the check input field blank for aesthetic reasons.
+        // If the user changes the tip percentage first, this will plug a zero into the check field
+        // in order to keep a null value from crashing the math.
+        float checkValue;
+        try
+        {
+            checkValue = Float.parseFloat(checkString);
+        }
+        catch(NumberFormatException e)
+        {
+            checkValue = 0f;
+            checkInput.setText("0.00");
+        }
+
+        EditText percentInput = (EditText)findViewById(R.id.TipPercentInput);
+        tipString = percentInput.getText().toString();
+        // Since there is a default value in the tip field, a null can only occur if the user
+        // erases the value and then hits "done".  I'll treat this as a zero percent tip.
+        float tipPercent;
+        try
+        {
+            tipPercent = Float.parseFloat(tipString);
+        }
+        catch(NumberFormatException e)
+        {
+            tipPercent = 0f;
+            percentInput.setText( "0" );
+        }
+        tipPercent /= 100;  // convert from percentage points for multiplying (e.g. 15% to .15 )
+
+        // DecimalFormat formats and rounds the amount.
+        DecimalFormat df = new DecimalFormat("####0.00");
+
+        TextView tipVal = (TextView)findViewById(R.id.TipValue);
+        float tipValue = checkValue * tipPercent;
+        String formattedTip = df.format(tipValue);
+        tipVal.setText( formattedTip );
+
+        // Use the rounded tip value to prevent possible off by 1 errors.
+        TextView totalVal = (TextView)findViewById(R.id.TotalValue);
+        tipValue = Float.parseFloat(formattedTip);
+        float totalValue = checkValue + tipValue;
+        totalVal.setText(df.format(totalValue));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+
+        // Save the last percentage entered.
+        SharedPreferences oldPercentage = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = oldPercentage.edit();
+        editor.putString("percentage", tipString);
+        editor.commit();
+    }
+}

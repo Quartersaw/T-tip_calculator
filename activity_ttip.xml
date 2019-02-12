@@ -1,0 +1,101 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bgmed"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".TtipActivity"
+    android:textAlignment="textEnd"
+    android:touchscreenBlocksFocus="true">
+
+   <TextView
+        android:id="@+id/CheckLabel"
+        android:text="@string/checkLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_toStartOf="@+id/CheckValue"
+        android:layout_toLeftOf="@+id/CheckValue"
+        android:layout_alignBaseline="@+id/CheckValue"/>
+
+    <EditText
+        android:id="@+id/CheckValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="4"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_above="@+id/TipValue"
+        android:layout_marginBottom="60dp"
+        android:layout_alignStart="@+id/TipValue"
+        android:layout_alignLeft="@+id/TipValue"
+        android:imeOptions="actionDone" />
+
+    <TextView
+        android:id="@+id/TipLabel"
+        android:text="@string/tipLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/TipPercentInput"
+        android:layout_toLeftOf="@+id/TipPercentInput" />
+
+    <EditText
+        android:id="@+id/TipPercentInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="2"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/TipSigns"
+        android:layout_toLeftOf="@+id/TipSigns"
+        android:gravity="bottom|center_horizontal" />
+
+    <TextView
+        android:id="@+id/TipSigns"
+        android:text="%  $"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/TipValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="4"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/TipSigns"
+        android:layout_toRightOf="@+id/TipSigns" />
+
+    <TextView
+        android:id="@+id/TotalLabel"
+        android:text="@string/totalLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_toStartOf="@+id/TotalValue"
+        android:layout_toLeftOf="@+id/TotalValue"
+        android:layout_alignBaseline="@+id/TotalValue" />
+
+    <TextView
+        android:id="@+id/TotalValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="4"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/TipValue"
+        android:layout_marginTop="60dp"
+        android:layout_alignStart="@+id/TipValue"
+        android:layout_alignLeft="@+id/TipValue"/>
+
+</RelativeLayout>
